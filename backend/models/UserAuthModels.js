@@ -19,4 +19,4 @@ const UserAuthModels = new Schema ({
     }
 })
 
-module.exports = mongoose.model('UserAuthModels', UserAuthModels);
+module.exports = mongoose.model('UserAuthModels', UserAuthModels, 'Users');
