@@ -13,16 +13,19 @@ const addUserDetails = async (req, res) => {
 }
 
 // To get a single user Detail - GET
+// To find a user existance
 const getAUserDetails = async (req, res) => {
-    const {gmail, pwd} = req.body;
+    const { uname, gmail, pwd } = req.body;
     try {
-        const task = await UserAuthModels.findOne({gmail});
+        const task = await UserAuthModels.findOne({ gmail });
         if (task) {
-            if (task.pwd === pwd) {
-                res.status(200).json({message: "Login Successfull", task});
+            if (task.pwd === pwd && task.uname === uname) {
+                res.status(200).json({ message: "Login Successfull", task });
+            } else {
+                res.status(200).json({ message: "User not found" });
             }
         }   else {
-            res.status(200).json({message: "User not found"});
+            res.status(200).json({ message: "User not found" });
         }
     } catch (e) {
         res.status(400).json({ message: "Error Occured" });
