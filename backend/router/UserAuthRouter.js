@@ -1,11 +1,10 @@
 const express = require('express');
-const { addUserDetails, getUserDetails, getAUserDetails, updateUserDetails, deleteUserDetails } = require('../controllers/UserAuthControllers');
+const { addUserDetails, getAUserDetails, updateUserDetails, deleteUserDetails } = require('../controllers/UserAuthControllers');
 const router = express.Router();
 
-router.post('/', addUserDetails);
-router.get('/', getUserDetails);
-router.get('/:id', getAUserDetails);
-router.patch('/:id', updateUserDetails);
-router.delete('/:id', deleteUserDetails);
+router.post('/register', addUserDetails);
+router.post('/login', getAUserDetails);
+router.patch('/register/:id', updateUserDetails);
+router.delete('/register/:id', deleteUserDetails);
 
 module.exports = ('UserAuthRouter', router);

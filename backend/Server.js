@@ -19,4 +19,4 @@ mongoose
         })
     }).catch((e) => console.log(e.message));
 
-app.use('/register', UserAuthRouter);
+app.use('/', UserAuthRouter);

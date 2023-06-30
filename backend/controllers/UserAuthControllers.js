@@ -4,36 +4,28 @@ const UserAuthModels = require('../models/UserAuthModels');
 // To Create a new User - POST
 const addUserDetails = async (req, res) => {
     try {
-        const {uname, gmail, pwd, cpwd} = req.body;
-        const task = await UserAuthModels.create({uname, gmail, pwd, cpwd});
+        const { uname, gmail, pwd, cpwd } = req.body;
+        const task = await UserAuthModels.create({ uname, gmail, pwd, cpwd });
         res.status(200).json(task);
-    }   catch (e) {
-        res.status(400).json({message: 'Error Occured'});
-    }
-}
-
-// To Get all user Details - GET
-const getUserDetails = async (req, res) => {
-    try {
-        const task = await UserAuthModels.find({});
-        res.status(200).json(task);
-    }   catch (e) {
-        res.status(400).json({message: 'Error Occured'});
+    } catch (e) {
+        res.status(400).json({ message: 'Error Occured' });
     }
 }
 
 // To get a single user Detail - GET
 const getAUserDetails = async (req, res) => {
-    const { id } = req.params;
-    if (!(mongoose.Types.ObjectId.isValid(id))) {
-        return res.status(404).json({message: "User Not Found"});
-    }
-    
+    const {gmail, pwd} = req.body;
     try {
-        const task = await UserAuthModels.findById(id);
-        res.status(200).json(task);
-    }   catch (e) {
-        res.status(400).json({message: "Error Occured"});
+        const task = await UserAuthModels.findOne({gmail});
+        if (task) {
+            if (task.pwd === pwd) {
+                res.status(200).json({message: "Login Successfull", task});
+            }
+        }   else {
+            res.status(200).json({message: "User not found"});
+        }
+    } catch (e) {
+        res.status(400).json({ message: "Error Occured" });
     }
 }
 
@@ -41,7 +33,7 @@ const getAUserDetails = async (req, res) => {
 const updateUserDetails = async (req, res) => {
     const { id } = req.params;
     if (!(mongoose.Types.ObjectId.isValid(id))) {
-        return res.status(404).json({message: "User Not Found"});
+        return res.status(404).json({ message: "User Not Found" });
     }
 
     try {
@@ -50,24 +42,24 @@ const updateUserDetails = async (req, res) => {
         }, {
             ...req.body
         });
-        res.status(200).json({message: "Updated Successfully", task});
-    }   catch (e) {
-        res.status(400).json({message: "Error Occured"});
+        res.status(200).json({ message: "Updated Successfully", task });
+    } catch (e) {
+        res.status(400).json({ message: "Error Occured" });
     }
 }
 
 const deleteUserDetails = async (req, res) => {
     const { id } = req.params;
     if (!(mongoose.Types.ObjectId.isValid(id))) {
-        return res.status(404).json({message: "User Not Found"});
+        return res.status(404).json({ message: "User Not Found" });
     }
 
     try {
         const task = await UserAuthModels.findByIdAndDelete(id);
-        res.status(200).json({message: "Deleted Successfully", task});
-    }   catch (e) {
-        res.status(400).json({message: "Error Occured"});
+        res.status(200).json({ message: "Deleted Successfully", task });
+    } catch (e) {
+        res.status(400).json({ message: "Error Occured" });
     }
 }
 
-module.exports = {addUserDetails, getUserDetails, getAUserDetails, updateUserDetails, deleteUserDetails};
+module.exports = { addUserDetails, getAUserDetails, updateUserDetails, deleteUserDetails };
