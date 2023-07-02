@@ -1,3 +1,6 @@
+// Reference >>
+// https://github.com/ghulamrabbani883/GeekflareNodeAPI/blob/main/routes/userRoute.js
+
 const express = require('express');
 const {mongoose} = require('mongoose');
 const cors = require('cors');

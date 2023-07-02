@@ -13,8 +13,7 @@ export const addUserDetails = async (userData) => {
 export const findAUserExistance = async (userData) => {
     try {
         const task = await Axios.post(`${BASE_URL}/login`, userData);
-        const response = task.data.message;
-        return response;
+        return task;
     }   catch (e) {
         console.log(e.message);
     }

@@ -1,7 +1,18 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { findAUserExistance } from '../services/ServiceWorkers';
 
 function Login() {
+    useEffect(() => {
+        try {
+            const token = localStorage.getItem('Authorization_Token');
+            if (token) {
+                console.log(token);   
+            }
+        }
+        catch (e) {
+            console.log(e.message);
+        }
+    }, [])
     const initalState = { uname: "", gmail: "", pwd: "" };
     const [UserDetails, setUserDetails] = useState(initalState);
 
@@ -13,11 +24,15 @@ function Login() {
         e.preventDefault();
         if (!(UserDetails.uname.trim() === "" || UserDetails.gmail.trim() === "" || UserDetails.pwd.trim() === "")) {
             findAUserExistance(UserDetails)
-                .then((response) => {
-                    if (response === "Login Successfull") {
-                        alert(`Welcome ${UserDetails.uname}`);
-                    }   else if (response === "User not found") {
-                        alert(response);
+                .then((task) => {
+                    if (task.status === 200) {
+                        const { message, token } = task.data;
+                        if (message === "Login Successfull") {
+                            alert("Login Successfull");
+                            localStorage.setItem("Authorization_Token", token);
+                        } else if (response.message === "User not found") {
+                            alert(response);
+                        }
                     }
                 })
                 .catch((e) => console.log(e.message));
@@ -63,7 +78,7 @@ function Login() {
                 </div>
                 <input
                     type='submit'
-                    value={'Register'}
+                    value={'Login'}
                     onClick={(e) => handleSubmit(e)}
                 />
             </form>
